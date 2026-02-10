@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import SimpleTextField from "./SimpleTextField";
+import SimpleTextField from "app/components/ui/SimpleTextField";
 
 // TODO: adjust icon padding for small mobile breakpoints
 
