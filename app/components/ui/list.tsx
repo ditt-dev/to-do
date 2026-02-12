@@ -8,7 +8,8 @@ import { reorderWithEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/util/r
 import { triggerPostMoveFlash } from "@atlaskit/pragmatic-drag-and-drop-flourish/trigger-post-move-flash";
 import { flushSync } from "react-dom";
 
-import Box from "@mui/material/Box";
+import { Box, Stack } from "@mui/material";
+import { taskSpacing } from "@/app/config";
 
 export function List() {
   const [tasks, setTasks] = useState<TTask[]>(() => getTasks());
@@ -74,27 +75,19 @@ export function List() {
     // Background containers
     <Box
       sx={{
-        paddingTop: "1.5rem",
-        marginY: "0",
         marginX: "auto",
         width: "420px",
+        borderRadius: "0.25rem",
+        borderWidth: "1px",
+        borderStyle: "solid",
+        padding: "0.5rem",
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          padding: "0.5rem",
-          flexDirection: "column",
-          gap: "0.5rem",
-          borderRadius: "0.25rem",
-          borderWidth: "1px",
-          borderStyle: "solid",
-        }}
-      >
+      <Stack spacing={`${taskSpacing}px`}>
         {tasks.map((task) => (
           <Task key={task.id} task={task} />
         ))}
-      </Box>
+      </Stack>
     </Box>
   );
 }

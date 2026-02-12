@@ -26,7 +26,7 @@ import {
 } from "@mui/material";
 import { DragIndicator } from "@mui/icons-material";
 
-import DropIndicator from "app/components/ui/DropIndicator";
+import DropIndicator from "@/app/components/ui/DropIndicator";
 import { getTaskData, isTaskData, type TTask } from "./task-data";
 // import { Status } from "./status";
 
@@ -192,7 +192,7 @@ export function Task({ task }: { task: TTask }) {
 
         {/* Display drag indicator. */}
         {state.type === "is-dragging-over" && state.closestEdge ? (
-          <DropIndicator edge={state.closestEdge} gap={8} />
+          <DropIndicator edge={state.closestEdge} />
         ) : null}
       </Box>
 

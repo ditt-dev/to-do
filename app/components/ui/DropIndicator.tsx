@@ -1,6 +1,8 @@
 import type { Edge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/types";
 import { Box } from "@mui/material";
 
+import { taskSpacing } from "@/app/config";
+
 // TODO: write documentation
 
 /**
@@ -9,19 +11,15 @@ import { Box } from "@mui/material";
  * @returns
  */
 
-export default function DropIndicator({
-  edge,
-  gap,
-}: {
-  edge: Edge;
-  gap: number;
-}) {
+export default function DropIndicator({ edge }: { edge: Edge }) {
   const lineColor = "royalblue"; // Original: #1447e6
+
+  // Define line properties in pixels.
   const lineThickness = 2;
   const ornamentSize = 8;
 
-  const lineOffset = `${(gap + lineThickness) * -0.5}px`;
-  const ornamentOffset = `${(lineThickness - ornamentSize) * 0.5}px`;
+  const lineOffset = (taskSpacing + lineThickness) / -2;
+  const ornamentOffset = (lineThickness - ornamentSize) / 2;
 
   return (
     <Box
@@ -33,17 +31,17 @@ export default function DropIndicator({
 
         // Apply edge styles.
         ...((edge === "bottom" || edge === "top") && {
-          [edge]: lineOffset,
+          [edge]: `${lineOffset}px`,
           height: `${lineThickness}px`,
           left: `${ornamentSize / 2}px`,
           right: 0,
         }),
-        ...((edge === "left" || edge === "right") && {
-          [edge]: lineOffset,
-          bottom: 0,
-          top: `${ornamentSize / 2}px`,
-          width: `${lineThickness}px`,
-        }),
+        // ...((edge === "left" || edge === "right") && {
+        //   [edge]: lineOffset,
+        //   bottom: 0,
+        //   top: `${ornamentSize / 2}px`,
+        //   width: `${lineThickness}px`,
+        // }),
 
         // Apply ornament styles.
         "&::before": {
@@ -56,13 +54,13 @@ export default function DropIndicator({
           width: `${ornamentSize}px`,
 
           ...((edge === "bottom" || edge === "top") && {
-            [edge]: ornamentOffset,
+            [edge]: `${ornamentOffset}px`,
             left: `-${ornamentSize}px`,
           }),
-          ...((edge === "left" || edge === "right") && {
-            [edge]: ornamentOffset,
-            top: `-${ornamentSize}px`,
-          }),
+          // ...((edge === "left" || edge === "right") && {
+          //   [edge]: `${ornamentOffset}px`,
+          //   top: `-${ornamentSize}px`,
+          // }),
         },
       }}
     />
