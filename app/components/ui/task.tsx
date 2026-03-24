@@ -14,8 +14,6 @@ import {
   type Edge,
 } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
 
-import invariant from "tiny-invariant";
-
 import {
   Box,
   Card,
@@ -30,7 +28,6 @@ import DropIndicator from "@/app/components/ui/DropIndicator";
 import { getTaskData, isTaskData, type TTask } from "./task-data";
 // import { Status } from "./status";
 
-// TODO: investigate "invariant" import
 // TODO: The component passes down a hardcoded "gap" attribute. Find a way for the indicator to calculate its position without that
 // TODO: General code parsing and cleanup
 
@@ -57,8 +54,10 @@ export function Task({ task }: { task: TTask }) {
   const [state, setState] = useState<TaskState>(idle);
 
   useEffect(() => {
+    if (!ref.current) return;
+
     const element = ref.current;
-    invariant(element);
+
     return combine(
       draggable({
         element,
