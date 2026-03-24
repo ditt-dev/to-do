@@ -197,25 +197,26 @@ export function Task({ task }: { task: TTask }) {
       </Box>
 
       {/* Display hover preview text when dragging. */}
-      {state.type === "preview"
+      {/* {state.type === "preview"
         ? createPortal(<DragPreview task={task} />, state.container)
-        : null}
+        : null} */}
     </>
   );
 }
 
 // A simplified version of our task for the user to drag around
-function DragPreview({ task }: { task: TTask }) {
-  return (
-    <Box
-      sx={{
-        padding: "0.5rem",
-        borderRadius: "0.25rem",
-        borderStyle: "solid",
-        backgroundColor: "#ffffff",
-      }}
-    >
-      {task.content}
-    </Box>
-  );
-}
+// function DragPreview({ task }: { task: TTask }) {
+//   return (
+//     <Box
+//       sx={{
+//         backgroundColor: "#ffffff",
+//         color: "#000",
+//         borderRadius: "0.25rem",
+//         borderStyle: "solid",
+//         padding: "0.5rem",
+//       }}
+//     >
+//       {task.content}
+//     </Box>
+//   );
+// }
