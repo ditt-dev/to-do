@@ -10,7 +10,7 @@ import {
 import { DragIndicator } from "@mui/icons-material";
 
 import DropIndicator from "@/app/components/ui/DropIndicator";
-import { useTaskDragAndDrop } from "@/app/hooks/dragAndDrop";
+import { useDragAndDropState } from "@/app/hooks/useDragAndDropState";
 import { type TTask } from "./task-data";
 // import { Status } from "./status";
 // import { DragPreview } from "./DragPreview";
@@ -20,7 +20,7 @@ import { type TTask } from "./task-data";
 export default function Task({ task }: { task: TTask }) {
   const [expanded, setExpanded] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
-  const state = useTaskDragAndDrop({ task, elementRef: ref });
+  const state = useDragAndDropState({ task, elementRef: ref });
 
   const handleExpandClick = () => setExpanded(!expanded);
 

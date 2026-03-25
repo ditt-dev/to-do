@@ -9,12 +9,12 @@ import { isTaskData, type TTask } from "app/components/ui/task-data";
 
 // TODO: Comment cleanup, write documentation
 
-interface DropMonitorProps {
+interface DaDMonitorProps {
   tasks: TTask[];
   setTasks: React.Dispatch<React.SetStateAction<TTask[]>>;
 }
 
-export function useDropMonitor({ tasks, setTasks }: DropMonitorProps) {
+export function useDragAndDropMonitor({ tasks, setTasks }: DaDMonitorProps) {
   useEffect(() => {
     return monitorForElements({
       canMonitor({ source }) {
