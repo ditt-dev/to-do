@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
-import { getTasks, type TTask } from "app/components/ui/task-data";
-import Task from "app/components/ui/Task";
+import { useEffect } from "react";
+import { flushSync } from "react-dom";
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
-import { isTaskData } from "app/components/ui/task-data";
+import { triggerPostMoveFlash } from "@atlaskit/pragmatic-drag-and-drop-flourish/trigger-post-move-flash";
 import { extractClosestEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
 import { reorderWithEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/util/reorder-with-edge";
-import { triggerPostMoveFlash } from "@atlaskit/pragmatic-drag-and-drop-flourish/trigger-post-move-flash";
-import { flushSync } from "react-dom";
 
-import { Box, Stack } from "@mui/material";
-import { taskSpacing } from "@/app/config";
+import { isTaskData, type TTask } from "app/components/ui/task-data";
 
-export function List() {
-  const [tasks, setTasks] = useState<TTask[]>(() => getTasks());
+// TODO: Comment cleanup, write documentation
 
+interface DropMonitorProps {
+  tasks: TTask[];
+  setTasks: React.Dispatch<React.SetStateAction<TTask[]>>;
+}
+
+export function useDropMonitor({ tasks, setTasks }: DropMonitorProps) {
   useEffect(() => {
     return monitorForElements({
       canMonitor({ source }) {
@@ -69,25 +70,5 @@ export function List() {
         }
       },
     });
-  }, [tasks]);
-
-  return (
-    // Background containers
-    <Box
-      sx={{
-        marginX: "auto",
-        width: "420px",
-        borderRadius: "0.25rem",
-        borderWidth: "1px",
-        borderStyle: "solid",
-        padding: "0.5rem",
-      }}
-    >
-      <Stack spacing={`${taskSpacing}px`}>
-        {tasks.map((task) => (
-          <Task key={task.id} task={task} />
-        ))}
-      </Stack>
-    </Box>
-  );
+  }, [tasks, setTasks]);
 }
