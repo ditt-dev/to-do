@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getTasks, type TTask } from "app/components/ui/task-data";
-import { Task } from "app/components/ui/task";
+import Task from "app/components/ui/Task";
 import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { isTaskData } from "app/components/ui/task-data";
 import { extractClosestEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
