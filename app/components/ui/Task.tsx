@@ -40,7 +40,9 @@ export default function Task({ task }: { task: TTask }) {
           }}
           // Adding data-attribute as a way to query for this for our post drop flash
           data-task-id={task.id}
-          ref={ref}
+
+          // TODO: reenable the ref to restore DaD functionality
+          // ref={ref}
         >
           <Box id="title-container" sx={{ display: "flex" }}>
             <IconButton disableRipple sx={{ paddingLeft: 0 }}>
