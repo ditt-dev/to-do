@@ -5,10 +5,11 @@ import {
   CardContent,
   Collapse,
   IconButton,
+  TextareaAutosize,
   Typography,
 } from "@mui/material";
-import { DragIndicator } from "@mui/icons-material";
 
+import { DragIndicator } from "@mui/icons-material";
 import DropIndicator from "@/app/components/ui/DropIndicator";
 import { useDragAndDropState } from "@/app/hooks/useDragAndDropState";
 import { type TTask } from "./task-data";
@@ -18,18 +19,18 @@ import { type TTask } from "./task-data";
 // TODO: Comment cleanup, write documentation
 
 export default function Task({ task }: { task: TTask }) {
-  const [expanded, setExpanded] = useState(false);
+  const [collapseOpen, setCollapseOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const state = useDragAndDropState({ task, elementRef: ref });
 
-  const handleExpandClick = () => setExpanded(!expanded);
+  const handleCollapseOpen = () => setCollapseOpen(true);
 
   return (
     <>
       <Box sx={{ position: "relative" }}>
         {/* Task card */}
         <Card
-          onClick={handleExpandClick}
+          onClick={handleCollapseOpen}
           sx={{
             opacity: `${state.type === "is-dragging" && 0.75}`,
             "&:hover": {
@@ -60,9 +61,26 @@ export default function Task({ task }: { task: TTask }) {
             </Typography>
           </Box>
 
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <Typography sx={{ marginBottom: 2 }}>Method:</Typography>
+          <Collapse in={collapseOpen} timeout="auto" unmountOnExit>
+            <CardContent
+              sx={{
+                // Override .Mui-CardContent-root padding.
+                "&:last-child": {
+                  padding: "0.25rem 0.5rem 0",
+                },
+              }}
+            >
+              <TextareaAutosize
+                minRows={4}
+                style={{
+                  backgroundColor: "transparent",
+                  border: "none",
+                  color: "#000",
+                  outline: "none",
+                  resize: "none",
+                  width: "100%",
+                }}
+              />
             </CardContent>
           </Collapse>
 
