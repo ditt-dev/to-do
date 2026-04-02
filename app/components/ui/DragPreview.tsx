@@ -1,18 +1,20 @@
+import { createPortal } from "react-dom";
 import { pointerOutsideOfPreview } from "@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview";
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
 import { Box } from "@mui/material";
-import { createPortal } from "react-dom";
 
-import type { TTask } from "./task-data";
+import type { Task } from "@/app/lib/taskData";
 
-//TODO: write documentation
+// TODO
+// write documentation
+// Improve preview component styling
 
 // Render preview of dragged element.
-interface DragPreviewArgs {
+interface DragPreviewProps {
   container: HTMLElement;
-  task: TTask;
+  task: Task;
 }
-export function DragPreview({ container, task }: DragPreviewArgs) {
+export function DragPreview({ container, task }: DragPreviewProps) {
   return createPortal(
     <Box
       sx={{
@@ -23,14 +25,14 @@ export function DragPreview({ container, task }: DragPreviewArgs) {
         padding: "0.5rem",
       }}
     >
-      {task.content}
+      {task.title}
     </Box>,
     container,
   );
 }
 
 // Render the container for the drag preview.
-interface HandleDragPreviewArgs {
+interface HandleDragPreviewProps {
   nativeSetDragImage:
     | null
     | ((image: HTMLElement, x: number, y: number) => void);
@@ -40,17 +42,17 @@ interface HandleDragPreviewArgs {
 export function handleDragPreview({
   nativeSetDragImage,
   setState,
-}: HandleDragPreviewArgs) {
+}: HandleDragPreviewProps) {
   if (!nativeSetDragImage) return;
 
   setCustomNativeDragPreview({
     nativeSetDragImage,
-
     // Determine the preview's offset in pixels from the mouse cursor.
     getOffset: pointerOutsideOfPreview({
       x: "16px",
       y: "8px",
     }),
+
     render({ container }) {
       setState({ type: "preview", container });
     },

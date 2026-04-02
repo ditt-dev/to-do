@@ -36,12 +36,6 @@ export default function DropIndicator({ edge }: { edge: Edge }) {
           left: `${ornamentSize / 2}px`,
           right: 0,
         }),
-        // ...((edge === "left" || edge === "right") && {
-        //   [edge]: lineOffset,
-        //   bottom: 0,
-        //   top: `${ornamentSize / 2}px`,
-        //   width: `${lineThickness}px`,
-        // }),
 
         // Apply ornament styles.
         "&::before": {
@@ -57,10 +51,6 @@ export default function DropIndicator({ edge }: { edge: Edge }) {
             [edge]: `${ornamentOffset}px`,
             left: `-${ornamentSize}px`,
           }),
-          // ...((edge === "left" || edge === "right") && {
-          //   [edge]: `${ornamentOffset}px`,
-          //   top: `-${ornamentSize}px`,
-          // }),
         },
       }}
     />
