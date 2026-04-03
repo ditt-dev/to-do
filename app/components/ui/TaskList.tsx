@@ -6,7 +6,7 @@ import { Container, Stack, Divider } from "@mui/material";
 import CreateTask from "@/app/components/ui/CreateTask";
 import TaskCard from "@/app/components/ui/TaskCard";
 import { useDragAndDropMonitor } from "@/app/hooks/useDragAndDropMonitor";
-import { readDB } from "@/app/lib/indexedDB";
+import { getAllTasks } from "@/app/lib/indexedDB";
 import { type Task } from "@/app/lib/taskData";
 
 // TODO:
@@ -24,7 +24,7 @@ export default function TaskList() {
     try {
       setLoading(true);
 
-      const res = await readDB();
+      const res = await getAllTasks();
       setData(res);
     } catch (error) {
       console.error("Error reading from database:", error);

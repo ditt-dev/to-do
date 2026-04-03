@@ -5,7 +5,7 @@ import { triggerPostMoveFlash } from "@atlaskit/pragmatic-drag-and-drop-flourish
 import { extractClosestEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
 import { reorderWithEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/util/reorder-with-edge";
 
-import { updateTaskOrder } from "@/app/lib/indexedDB";
+import { updateTaskIdx } from "@/app/lib/indexedDB";
 import { isTaskData, type Task } from "@/app/lib/taskData";
 
 // TODO:
@@ -52,7 +52,7 @@ export function useDragAndDropMonitor({ tasks, setTasks }: DaDMonitorProps) {
         });
 
         // Update the database with new task indices.
-        updateTaskOrder(reorderedTasks);
+        updateTaskIdx(reorderedTasks);
 
         // Play flashing animation on moved element.
         const element = document.querySelector(

@@ -9,6 +9,7 @@ const DB_NAME = "TaskDB";
 const DB_VERSION = 1;
 const STORE_NAME = "tasks";
 
+// Call the database
 async function initDB() {
   return await openDB(DB_NAME, DB_VERSION, {
     upgrade(db) {
@@ -23,7 +24,8 @@ async function initDB() {
   });
 }
 
-export async function writeDB(data: Omit<Task, "id" | "index">) {
+// Create new task
+export async function createNewTask(data: Omit<Task, "id" | "index">) {
   const db = await initDB();
   const tasks = await db.getAll(STORE_NAME);
 
@@ -37,15 +39,15 @@ export async function writeDB(data: Omit<Task, "id" | "index">) {
 }
 
 // Get all tasks from database ordered by their index.
-export async function readDB() {
+export async function getAllTasks() {
   const db = await initDB();
   const tasks = await db.getAll(STORE_NAME);
 
   return tasks.sort((a, b) => a.index - b.index);
 }
 
-// Update task order after drag and drop
-export async function updateTaskOrder(reorderedTasks: Task[]) {
+// Update task order (database indices) after drag and drop
+export async function updateTaskIdx(reorderedTasks: Task[]) {
   const db = await initDB();
   const transaction = db.transaction(STORE_NAME, "readwrite");
   const store = transaction.objectStore(STORE_NAME);

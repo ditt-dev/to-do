@@ -14,7 +14,7 @@ import {
   Zoom,
 } from "@mui/material";
 
-import { writeDB } from "@/app/lib/indexedDB";
+import { createNewTask } from "@/app/lib/indexedDB";
 
 // TODO:
 // documentation
@@ -37,7 +37,7 @@ export default function CreateTask({ onCreate }: CreateTaskProps) {
 
   const handleSave = async () => {
     try {
-      await writeDB({
+      await createNewTask({
         title: titleText,
         body: bodyText,
         createdOn: new Date(Date.now()).toISOString(),
