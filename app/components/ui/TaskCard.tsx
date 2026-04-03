@@ -17,25 +17,37 @@ import DropIndicator from "@/app/components/ui/DropIndicator";
 import { useDragAndDropState } from "@/app/hooks/useDragAndDropState";
 import { type Task } from "@/app/lib/taskData";
 
+import { deleteTask } from "@/app/lib/indexedDB";
+
 // TODO:
-// Implement "edit" and "save" functionality
+// Implement "edit" functionality
 // Try to make this reusable so an "editable" version with text fields can be used in CreateTask
 // documentation
 
-export default function TaskCard({
-  task,
-  expandID,
-  onExpand,
-}: {
-  task: Task;
+interface TaskCardProps {
   expandID: number | null;
+  onAction?: () => void;
   onExpand: (id: number) => void;
-}) {
+  task: Task;
+}
+export default function TaskCard({
+  expandID,
+  onAction,
+  onExpand,
+  task,
+}: TaskCardProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const dragState = useDragAndDropState({ task, elementRef: ref });
 
+  const handleDelete = async (id: number) => {
+    await deleteTask(id);
+
+    // Update parent component after deletion and animation
+    if (onAction) onAction();
+  };
+
   return (
-    <Box sx={{ position: "relative" }}>
+    <Box style={{ position: "relative" }}>
       <Card
         // Allow element to be queried by DaD hooks.
         data-task-id={task.id}
@@ -66,7 +78,11 @@ export default function TaskCard({
             <Button disabled={true} variant="contained">
               Edit
             </Button>
-            <Button disabled={true} variant="contained">
+            <Button
+              color="error"
+              onClick={() => handleDelete(task.id)}
+              variant="contained"
+            >
               Delete
             </Button>
           </CardActions>

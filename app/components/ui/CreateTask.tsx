@@ -20,9 +20,9 @@ import { createNewTask } from "@/app/lib/indexedDB";
 // documentation
 
 interface CreateTaskProps {
-  onCreate?: () => void;
+  onAction?: () => void;
 }
-export default function CreateTask({ onCreate }: CreateTaskProps) {
+export default function CreateTask({ onAction }: CreateTaskProps) {
   const [bodyText, setBodyText] = useState<string>("");
   const [titleText, setTitleText] = useState<string>("");
   const [visible, setVisible] = useState<boolean>(false);
@@ -30,7 +30,7 @@ export default function CreateTask({ onCreate }: CreateTaskProps) {
   const handleBodyText = (value: string) => setBodyText(value);
   const handleTitleText = (value: string) => setTitleText(value);
   const handleVisible = () => setVisible(!visible);
-  const handleDelete = () => {
+  const handleCancel = () => {
     setBodyText("");
     setTitleText("");
   };
@@ -44,11 +44,11 @@ export default function CreateTask({ onCreate }: CreateTaskProps) {
       });
 
       // Update parent component when a new task is added.
-      if (onCreate) onCreate();
+      if (onAction) onAction();
 
       // Reset form and close
       handleVisible();
-      handleDelete();
+      handleCancel();
     } catch (error) {
       console.error("Error saving to database:", error);
     }
@@ -106,7 +106,7 @@ export default function CreateTask({ onCreate }: CreateTaskProps) {
                 color="error"
                 onClick={() => {
                   handleVisible();
-                  handleDelete();
+                  handleCancel();
                 }}
                 variant="contained"
               >

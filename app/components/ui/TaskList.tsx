@@ -53,13 +53,14 @@ export default function TaskList() {
             task={task}
             expandID={expandID}
             onExpand={handleExpand}
+            onAction={fetchData}
           />
         ))}
       </Stack>
 
       <Divider sx={{ margin: "3rem 0", backgroundColor: "red" }} />
 
-      <CreateTask onCreate={fetchData} />
+      <CreateTask onAction={fetchData} />
     </Container>
   );
 }

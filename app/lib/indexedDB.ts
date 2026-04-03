@@ -59,3 +59,10 @@ export async function updateTaskIdx(reorderedTasks: Task[]) {
 
   await transaction.done;
 }
+
+// Delete tasks
+export async function deleteTask(id: number) {
+  const db = await initDB();
+
+  return await db.delete(STORE_NAME, id);
+}
