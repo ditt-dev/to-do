@@ -38,8 +38,9 @@ export default function CreateTask({ onCreate }: CreateTaskProps) {
   const handleSave = async () => {
     try {
       await writeDB({
-        body: bodyText,
         title: titleText,
+        body: bodyText,
+        createdOn: new Date(Date.now()).toISOString(),
       });
 
       // Update parent component when a new task is added.

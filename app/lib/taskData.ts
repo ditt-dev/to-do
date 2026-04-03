@@ -6,6 +6,8 @@ export interface Task {
   id: number;
   title: string;
   body: string;
+  createdOn: string;
+  index: number;
 }
 
 // Type guard for drag and drop validation
@@ -13,13 +15,13 @@ export function isTaskData(data: unknown): data is {
   id: number;
   title: string;
   body: string;
+  createdOn: string;
+  index: number;
 } {
   return (
     typeof data === "object" &&
     data !== null &&
-    "id" in data &&
-    "title" in data &&
-    "body" in data
+    ["id", "title", "body", "createdOn", "index"].every((key) => key in data)
   );
 }
 
@@ -29,5 +31,7 @@ export function getNewTaskData(task: Task) {
     id: task.id,
     title: task.title,
     body: task.body,
+    createdOn: task.createdOn,
+    index: task.index,
   };
 }

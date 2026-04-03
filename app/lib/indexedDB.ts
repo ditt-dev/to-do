@@ -9,7 +9,6 @@ const DB_NAME = "TaskDB";
 const DB_VERSION = 1;
 const STORE_NAME = "tasks";
 
-// Query the existing or create a new database.
 async function initDB() {
   return await openDB(DB_NAME, DB_VERSION, {
     upgrade(db) {
@@ -18,28 +17,48 @@ async function initDB() {
         keyPath: "id",
       });
 
-      store.createIndex("id", "id");
+      // Create index on order for efficient sorting
+      store.createIndex("index", "index");
     },
   });
 }
 
-// Write function. The id value is automatically appended and incremented by initDB()
-export async function writeDB(data: Omit<Task, "id">) {
+export async function writeDB(data: Omit<Task, "id" | "index">) {
   const db = await initDB();
+  const tasks = await db.getAll(STORE_NAME);
 
-  return await db.add(STORE_NAME, data);
+  // Append index value for drag and drop reordering.
+  const newTask = {
+    ...data,
+    index: tasks.length,
+  };
+
+  return await db.add(STORE_NAME, newTask);
 }
 
-// Read function - get articles by ID order
 export async function readDB() {
   const db = await initDB();
+  const tasks = await db.getAll(STORE_NAME);
 
-  return await db.getAllFromIndex(STORE_NAME, "id");
+  return tasks.sort((a, b) => a.index - b.index);
 }
 
-// Read function - get single article by ID
-export async function getArticleById(id: number) {
+// Update task order after drag and drop
+export async function updateTaskOrder(orderedTaskIds: number[]) {
   const db = await initDB();
+  const transaction = db.transaction(STORE_NAME, "readwrite");
+  const store = transaction.objectStore(STORE_NAME);
 
-  return await db.get(STORE_NAME, id);
+  // Update each task's order based on its position in the array
+  for (let i = 0; i < orderedTaskIds.length; i++) {
+    const taskId = orderedTaskIds[i];
+    const task = await store.get(taskId);
+
+    if (task) {
+      task.index = i;
+      await store.put(task);
+    }
+  }
+
+  await transaction.done;
 }
