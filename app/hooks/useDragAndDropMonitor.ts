@@ -51,8 +51,8 @@ export function useDragAndDropMonitor({ tasks, setTasks }: DaDMonitorProps) {
           setTasks(reorderedTasks);
         });
 
-        // Update database with new task indices.
-        updateTaskOrder(reorderedTasks.map((task) => task.id));
+        // Update the database with new task indices.
+        updateTaskOrder(reorderedTasks);
 
         // Play flashing animation on moved element.
         const element = document.querySelector(

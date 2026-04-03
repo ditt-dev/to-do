@@ -36,6 +36,7 @@ export async function writeDB(data: Omit<Task, "id" | "index">) {
   return await db.add(STORE_NAME, newTask);
 }
 
+// Get all tasks from database ordered by their index.
 export async function readDB() {
   const db = await initDB();
   const tasks = await db.getAll(STORE_NAME);
@@ -44,21 +45,15 @@ export async function readDB() {
 }
 
 // Update task order after drag and drop
-export async function updateTaskOrder(orderedTaskIds: number[]) {
+export async function updateTaskOrder(reorderedTasks: Task[]) {
   const db = await initDB();
   const transaction = db.transaction(STORE_NAME, "readwrite");
   const store = transaction.objectStore(STORE_NAME);
 
-  // Update each task's order based on its position in the array
-  for (let i = 0; i < orderedTaskIds.length; i++) {
-    const taskId = orderedTaskIds[i];
-    const task = await store.get(taskId);
-
-    if (task) {
-      task.index = i;
-      await store.put(task);
-    }
-  }
+  reorderedTasks.forEach((task, i) => {
+    task.index = i;
+    store.put(task);
+  });
 
   await transaction.done;
 }
