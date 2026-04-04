@@ -14,6 +14,7 @@ import { handleDragPreview } from "@/app/components/ui/DragPreview";
 import { getNewTaskData, isTaskData, type Task } from "@/app/lib/taskData";
 
 // TODO:
+// Is getNewTaskData getter function necessary?
 // documentation
 
 type TaskState =
