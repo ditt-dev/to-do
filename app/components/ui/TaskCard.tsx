@@ -1,27 +1,16 @@
 import { useRef } from "react";
 import { MoreVert } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardHeader,
-  CardContent,
-  Collapse,
-  Divider,
-  IconButton,
-} from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 
 import { DragPreview } from "@/app/components/ui/DragPreview";
 import DropIndicator from "@/app/components/ui/DropIndicator";
+import TaskCardBase from "@/app/components/ui/TaskCardBase";
 import { useDragAndDropState } from "@/app/hooks/useDragAndDropState";
-import { type Task } from "@/app/lib/taskData";
-
 import { deleteTask } from "@/app/lib/indexedDB";
+import { type Task } from "@/app/lib/taskData";
 
 // TODO:
 // Implement "edit" functionality
-// Try to make this reusable so an "editable" version with text fields can be used in CreateTask
 // documentation
 
 interface TaskCardProps {
@@ -39,6 +28,7 @@ export default function TaskCard({
   const ref = useRef<HTMLDivElement | null>(null);
   const dragState = useDragAndDropState({ task, elementRef: ref });
 
+  // Delete task object from the database.
   const handleDelete = async (id: number) => {
     await deleteTask(id);
 
@@ -46,36 +36,26 @@ export default function TaskCard({
     if (onAction) onAction();
   };
 
+  // const [isEditing, setIsEditing] = useState<boolean>(false);
+  // const [editedTitle, setEditedTitle] = useState<string>(task.title);
+  // const [editedBody, setEditedBody] = useState<string>(task.body);
+
+  // Edit existing task object.
+  const handleEdit = () => {
+    // TO BE IMPLEMENTED
+    return;
+  };
+
   return (
     <Box style={{ position: "relative" }}>
-      <Card
-        // Allow element to be queried by DaD hooks.
-        data-task-id={task.id}
-        ref={ref}
-        variant="outlined"
-        sx={{
-          opacity: dragState.type === "is-dragging" ? 0.25 : 1,
-          cursor: "grab",
-          "&:active": {
-            cursor: "grabbing",
-          },
-        }}
-      >
-        <CardHeader
-          action={
-            <IconButton onClick={() => onExpand(task.id)}>
-              <MoreVert />
-            </IconButton>
-          }
-          title={task.title}
-        />
-
-        <Divider />
-
-        <Collapse in={expandID === task.id} timeout="auto" unmountOnExit>
-          <CardContent>{task.body}</CardContent>
-          <CardActions>
-            <Button disabled={true} variant="contained">
+      <TaskCardBase
+        bodyText={task.body}
+        // Identify object for the DaD flash animation.
+        dataTaskId={task.id}
+        // Display Edit and Delete buttons in the card foot.
+        footAction={
+          <>
+            <Button onClick={handleEdit} variant="contained">
               Edit
             </Button>
             <Button
@@ -85,9 +65,28 @@ export default function TaskCard({
             >
               Delete
             </Button>
-          </CardActions>
-        </Collapse>
-      </Card>
+          </>
+        }
+        // Display button to expand the task.
+        headAction={
+          <IconButton onClick={() => onExpand(task.id)}>
+            <MoreVert />
+          </IconButton>
+        }
+        onBodyChange={handleEdit}
+        onTitleChange={handleEdit}
+        isEditable={
+          // isEditing
+          false
+        }
+        isExpanded={expandID === task.id}
+        ref={ref}
+        titleText={task.title}
+        sx={{
+          cursor: "grab",
+          opacity: dragState.type === "is-dragging" ? 0.25 : 1,
+        }}
+      />
 
       {/* Display drop indicator when dragging. */}
       {dragState.type === "is-dragging-over" && dragState.closestEdge && (
