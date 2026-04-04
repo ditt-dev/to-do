@@ -5,9 +5,12 @@ import { Box } from "@mui/material";
 
 import type { Task } from "@/app/lib/taskData";
 
+// BUG:
+// Preview appears directly under finger on mobile. Needs a custom offset for touch events
+
 // TODO
-// write documentation
 // Improve preview component styling
+// write documentation
 
 // Render preview of dragged element.
 interface DragPreviewProps {
