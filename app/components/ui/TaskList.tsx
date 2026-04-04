@@ -4,17 +4,17 @@ import { useState, useEffect, useCallback } from "react";
 import { Container, Stack, Divider } from "@mui/material";
 
 import CreateTask from "@/app/components/ui/CreateTask";
-import TaskCard from "@/app/components/ui/TaskCard";
+import Task from "@/app/components/ui/Task";
 import { useDragAndDropMonitor } from "@/app/hooks/useDragAndDropMonitor";
 import { getAllTasks } from "@/app/lib/indexedDB";
-import { type Task } from "@/app/lib/taskData";
+import { type TTask } from "@/app/lib/taskData";
 
 // TODO:
 // Implement real MUI loading component
 // Documentation
 
 export default function TaskList() {
-  const [data, setData] = useState<Task[]>([]);
+  const [data, setData] = useState<TTask[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [expandID, setExpandID] = useState<number | null>(null);
 
@@ -48,7 +48,7 @@ export default function TaskList() {
     <Container>
       <Stack gap={1}>
         {data.map((task) => (
-          <TaskCard
+          <Task
             key={task.id}
             task={task}
             expandID={expandID}

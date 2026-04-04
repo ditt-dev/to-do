@@ -11,7 +11,7 @@ import {
 } from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
 
 import { handleDragPreview } from "@/app/components/ui/DragPreview";
-import { getNewTaskData, isTaskData, type Task } from "@/app/lib/taskData";
+import { getNewTaskData, isTaskData, type TTask } from "@/app/lib/taskData";
 
 // TODO:
 // Is getNewTaskData getter function necessary?
@@ -26,7 +26,7 @@ type TaskState =
 const idle: TaskState = { type: "idle" };
 
 interface DaDStateProps {
-  task: Task;
+  task: TTask;
   elementRef: React.RefObject<HTMLDivElement | null>;
 }
 export function useDragAndDropState({ task, elementRef }: DaDStateProps) {

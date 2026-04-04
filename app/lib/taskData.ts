@@ -2,7 +2,7 @@
 // documentation, sanity check, cleanup
 
 // New task data type for your structure
-export interface Task {
+export interface TTask {
   id: number;
   title: string;
   body: string;
@@ -26,7 +26,7 @@ export function isTaskData(data: unknown): data is {
 }
 
 // Getter for draggable/droppable data
-export function getNewTaskData(task: Task) {
+export function getNewTaskData(task: TTask) {
   return {
     id: task.id,
     title: task.title,

@@ -3,7 +3,7 @@ import { pointerOutsideOfPreview } from "@atlaskit/pragmatic-drag-and-drop/eleme
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
 import { Box } from "@mui/material";
 
-import type { Task } from "@/app/lib/taskData";
+import type { TTask } from "@/app/lib/taskData";
 
 // BUG:
 // Preview appears directly under finger on mobile. Needs a custom offset for touch events
@@ -15,7 +15,7 @@ import type { Task } from "@/app/lib/taskData";
 // Render preview of dragged element.
 interface DragPreviewProps {
   container: HTMLElement;
-  task: Task;
+  task: TTask;
 }
 export function DragPreview({ container, task }: DragPreviewProps) {
   return createPortal(

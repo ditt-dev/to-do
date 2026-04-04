@@ -6,14 +6,14 @@ import { extractClosestEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/clo
 import { reorderWithEdge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/util/reorder-with-edge";
 
 import { updateTaskIdx } from "@/app/lib/indexedDB";
-import { isTaskData, type Task } from "@/app/lib/taskData";
+import { isTaskData, type TTask } from "@/app/lib/taskData";
 
 // TODO:
 // Documentation
 
 interface DaDMonitorProps {
-  tasks: Task[];
-  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  tasks: TTask[];
+  setTasks: React.Dispatch<React.SetStateAction<TTask[]>>;
 }
 export function useDragAndDropMonitor({ tasks, setTasks }: DaDMonitorProps) {
   useEffect(() => {

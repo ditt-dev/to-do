@@ -7,7 +7,7 @@ import DropIndicator from "@/app/components/ui/DropIndicator";
 import TaskCardBase from "@/app/components/ui/TaskCardBase";
 import { useDragAndDropState } from "@/app/hooks/useDragAndDropState";
 import { deleteTask } from "@/app/lib/indexedDB";
-import { type Task } from "@/app/lib/taskData";
+import { type TTask } from "@/app/lib/taskData";
 
 // TODO:
 // Implement "edit" functionality
@@ -17,9 +17,9 @@ interface TaskCardProps {
   expandID: number | null;
   onAction?: () => void;
   onExpand: (id: number) => void;
-  task: Task;
+  task: TTask;
 }
-export default function TaskCard({
+export default function Task({
   expandID,
   onAction,
   onExpand,

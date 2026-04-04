@@ -1,5 +1,5 @@
 import { openDB } from "idb";
-import type { Task } from "./taskData";
+import type { TTask } from "./taskData";
 
 // TODO:
 // documentation
@@ -25,7 +25,7 @@ async function initDB() {
 }
 
 // Create new task
-export async function createNewTask(data: Omit<Task, "id" | "index">) {
+export async function createNewTask(data: Omit<TTask, "id" | "index">) {
   const db = await initDB();
   const tasks = await db.getAll(STORE_NAME);
 
@@ -47,7 +47,7 @@ export async function getAllTasks() {
 }
 
 // Update task order (database indices) after drag and drop
-export async function updateTaskIdx(reorderedTasks: Task[]) {
+export async function updateTaskIdx(reorderedTasks: TTask[]) {
   const db = await initDB();
   const transaction = db.transaction(STORE_NAME, "readwrite");
   const store = transaction.objectStore(STORE_NAME);
