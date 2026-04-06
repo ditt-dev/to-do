@@ -13,7 +13,8 @@ import {
 } from "@mui/material";
 
 // TODO:
-// documentation
+// 1) Fix headAction button vertical alignment
+// 2) Write documentation
 
 interface TaskCardBaseProps {
   bodyText: string;
