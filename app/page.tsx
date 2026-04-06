@@ -3,6 +3,7 @@ import { Container, Typography } from "@mui/material";
 import TaskList from "@/app/components/ui/TaskList";
 
 // TODO:
+// Check all sx attributes for unnecessary template literals
 // Export header, etc. to a layout component
 // Documentation
 
