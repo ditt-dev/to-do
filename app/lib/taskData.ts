@@ -8,6 +8,7 @@ export interface TTask {
   body: string;
   createdOn: string;
   index: number;
+  editedOn?: string;
 }
 
 // Type guard for drag and drop validation

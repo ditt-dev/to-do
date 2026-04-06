@@ -1,4 +1,6 @@
-import { useRef } from "react";
+"use client";
+
+import { useRef, useState } from "react";
 import { MoreVert } from "@mui/icons-material";
 import { Box, Button, IconButton } from "@mui/material";
 
@@ -6,12 +8,18 @@ import { DragPreview } from "@/app/components/ui/DragPreview";
 import DropIndicator from "@/app/components/ui/DropIndicator";
 import TaskCardBase from "@/app/components/ui/TaskCardBase";
 import { useDragAndDropState } from "@/app/hooks/useDragAndDropState";
-import { deleteTask } from "@/app/lib/indexedDB";
+import { deleteTask, editTask } from "@/app/lib/indexedDB";
 import { type TTask } from "@/app/lib/taskData";
 
+// BUG:
+// 1) ref={isEditing ?  null : ref} does not prevent DaD while isEditing = true
+
+// FIXME:
+// 1) It's possible to close a task, drag and drop, etc. with it still in edit mode. Toggling the task closed should turn off edit mode
+
 // TODO:
-// Implement "edit" functionality
-// documentation
+// 1) CSS  to highlight fields when task is in edit mode
+// 2) Write documentation
 
 interface TaskCardProps {
   expandID: number | null;
@@ -36,54 +44,99 @@ export default function Task({
     if (onAction) onAction();
   };
 
-  // const [isEditing, setIsEditing] = useState<boolean>(false);
+  // Control state to trigger edit function nodes and css
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+
+  const [bodyText, setBodyText] = useState<string>(task.body);
+  const [titleText, setTitleText] = useState<string>(task.title);
+
+  const handleBodyText = (value: string) => setBodyText(value);
+  const handleTitleText = (value: string) => setTitleText(value);
+
   // const [editedTitle, setEditedTitle] = useState<string>(task.title);
   // const [editedBody, setEditedBody] = useState<string>(task.body);
 
   // Edit existing task object.
-  const handleEdit = () => {
-    // TO BE IMPLEMENTED
-    return;
+  const handleStartEdit = () => setIsEditing(true);
+
+  const handleSubmitEdit = async () => {
+    try {
+      await editTask({
+        ...task,
+        title: titleText,
+        body: bodyText,
+        editedOn: new Date().toISOString(),
+      });
+
+      if (onAction) onAction();
+      setIsEditing(false);
+    } catch (error) {
+      handleCancel();
+
+      console.error("Error saving to database:", error);
+    }
   };
+
+  // Reset text fields to defaults.
+  const handleCancel = () => {
+    // Close the card expansion on cancel
+    // onExpand(NaN);
+
+    setBodyText(task.body);
+    setTitleText(task.title);
+    setIsEditing(false);
+  };
+
+  const footAction =
+    // Display Update and Cancel buttons during editing.
+    isEditing ? (
+      <>
+        <Button onClick={handleSubmitEdit} variant="contained">
+          Update
+        </Button>
+        <Button color="error" onClick={handleCancel} variant="contained">
+          Cancel
+        </Button>
+      </>
+    ) : (
+      // Display Edit and Delete buttons.
+      <>
+        <Button onClick={handleStartEdit} variant="contained">
+          Edit
+        </Button>
+        <Button
+          color="error"
+          onClick={() => handleDelete(task.id)}
+          variant="contained"
+        >
+          Delete
+        </Button>
+      </>
+    );
 
   return (
     <Box style={{ position: "relative" }}>
       <TaskCardBase
-        bodyText={task.body}
+        bodyText={bodyText}
         // Identify object for the DaD flash animation.
         dataTaskId={task.id}
         // Display Edit and Delete buttons in the card foot.
-        footAction={
-          <>
-            <Button onClick={handleEdit} variant="contained">
-              Edit
-            </Button>
-            <Button
-              color="error"
-              onClick={() => handleDelete(task.id)}
-              variant="contained"
-            >
-              Delete
-            </Button>
-          </>
-        }
+        footAction={footAction}
         // Display button to expand the task.
         headAction={
           <IconButton onClick={() => onExpand(task.id)}>
             <MoreVert />
           </IconButton>
         }
-        onBodyChange={handleEdit}
-        onTitleChange={handleEdit}
-        isEditable={
-          // isEditing
-          false
-        }
+        onBodyChange={handleBodyText}
+        onTitleChange={handleTitleText}
+        isEditable={isEditing}
         isExpanded={expandID === task.id}
-        ref={ref}
-        titleText={task.title}
+        // // Disable ref to prevent DaD during editing.
+        ref={isEditing ? null : ref}
+        titleText={titleText}
         sx={{
-          cursor: "grab",
+          cursor: isEditing ? "text" : "grab",
           opacity: dragState.type === "is-dragging" ? 0.25 : 1,
         }}
       />

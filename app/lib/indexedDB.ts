@@ -66,3 +66,9 @@ export async function deleteTask(id: number) {
 
   return await db.delete(STORE_NAME, id);
 }
+
+export async function editTask(data: TTask) {
+  const db = await initDB();
+
+  return await db.put(STORE_NAME, data);
+}
