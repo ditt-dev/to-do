@@ -63,6 +63,7 @@ export default function TaskCardBase({
             disabled={!isEditable}
             onChange={(e) => onTitleChange(e.target.value)}
             placeholder="Enter task name..."
+            required
             type="text"
             value={titleText}
             style={{ ...inputStyles, fontSize: "1.5rem" }}
