@@ -37,10 +37,12 @@ export default function CreateTask({ onAction }: CreateTaskProps) {
       await createNewTask({
         title: titleText,
         body: bodyText,
-        createdOn: new Date(Date.now()).toISOString(),
+        createdOn: new Date().toISOString(),
       });
 
       if (onAction) onAction();
+
+      // Reset fields
       handleCancel();
     } catch (error) {
       console.error("Error saving to database:", error);
