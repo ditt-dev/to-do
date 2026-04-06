@@ -4,45 +4,43 @@ import { useState } from "react";
 import { Box, Button, Stack, Zoom } from "@mui/material";
 
 import TaskCardBase from "@/app/components/ui/TaskCardBase";
-import { createNewTask } from "@/app/lib/indexedDB";
-
-// BUG:
-// Allows new tasks to be created without a title
+import { type TTask } from "@/app/lib/taskData";
 
 // TODO:
-// Documentation
+// 1) Toggle top/bottom mode for when the button is under the list or above it
+// 2) Wider button CSS
+// 3) Write documentation
 
 interface CreateTaskProps {
-  onAction?: () => void;
+  onCreateTask: (taskData: Omit<TTask, "id" | "index">) => Promise<void>;
 }
-export default function CreateTask({ onAction }: CreateTaskProps) {
+export default function CreateTask({ onCreateTask }: CreateTaskProps) {
   const [bodyText, setBodyText] = useState<string>("");
   const [titleText, setTitleText] = useState<string>("");
-  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [isHidden, setIsHidden] = useState<boolean>(false);
 
   const handleBodyText = (value: string) => setBodyText(value);
   const handleTitleText = (value: string) => setTitleText(value);
-  const handleVisibility = () => setIsVisible(!isVisible);
+  const handleVisibility = () => setIsHidden(!isHidden);
 
-  // Cancel new task creation.
   const handleCancel = () => {
-    setBodyText("");
-    setTitleText("");
-    setIsVisible(false);
+    setIsHidden(false);
+
+    // Delay resetting the text while the zoom animation plays.
+    setTimeout(() => {
+      setBodyText("");
+      setTitleText("");
+    }, 500);
   };
 
-  // Add new task object to the database.
   const handleSave = async () => {
     try {
-      await createNewTask({
+      await onCreateTask({
         title: titleText,
         body: bodyText,
         createdOn: new Date().toISOString(),
       });
 
-      if (onAction) onAction();
-
-      // Reset fields
       handleCancel();
     } catch (error) {
       console.error("Error saving to database:", error);
@@ -52,19 +50,17 @@ export default function CreateTask({ onAction }: CreateTaskProps) {
   return (
     <Stack gap={1} sx={{ alignItems: "center" }}>
       <Button
-        disabled={isVisible}
+        disabled={isHidden}
         onClick={handleVisibility}
         variant="contained"
       >
         + Add task
       </Button>
 
-      {/* The Box wrapper allows the zoom animation to work with custom component children */}
-      <Zoom in={isVisible}>
+      <Zoom in={isHidden}>
         <Box>
           <TaskCardBase
             bodyText={bodyText}
-            // Display Cancel and Save buttons in the card foot.
             footAction={
               <>
                 <Button
@@ -74,7 +70,11 @@ export default function CreateTask({ onAction }: CreateTaskProps) {
                 >
                   Cancel
                 </Button>
-                <Button onClick={handleSave} variant="contained">
+                <Button
+                  disabled={!titleText.trim()}
+                  onClick={handleSave}
+                  variant="contained"
+                >
                   Save
                 </Button>
               </>

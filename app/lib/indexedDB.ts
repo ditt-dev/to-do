@@ -2,9 +2,10 @@ import { openDB } from "idb";
 import type { TTask } from "./taskData";
 
 // TODO:
-// documentation
+// 1) Examine Omit<> logic: does it make sense to append id and index here instead of in the handler function in CreateTask?
+// 2) Write documentation
 
-// Configure database constants.
+// Configure database.
 const DB_NAME = "TaskDB";
 const DB_VERSION = 1;
 const STORE_NAME = "tasks";
@@ -14,7 +15,6 @@ async function initDB() {
   return await openDB(DB_NAME, DB_VERSION, {
     upgrade(db) {
       const store = db.createObjectStore(STORE_NAME, {
-        autoIncrement: true,
         keyPath: "id",
       });
 
@@ -24,27 +24,50 @@ async function initDB() {
   });
 }
 
-// Create new task
+// CRUD: create
 export async function createNewTask(data: Omit<TTask, "id" | "index">) {
   const db = await initDB();
   const tasks = await db.getAll(STORE_NAME);
 
-  // Append index value for drag and drop reordering.
+  // Calculate new indices from the highest existing value.
+  const newIndex =
+    tasks.reduce((max, task) => Math.max(max, task.index), -1) + 1;
+
   const newTask = {
     ...data,
-    index: tasks.length,
+    id: Date.now(),
+    index: newIndex,
   };
 
-  return await db.add(STORE_NAME, newTask);
+  await db.add(STORE_NAME, newTask);
+
+  return newTask;
 }
 
-// Get all tasks from database ordered by their index.
+// CRUD: read
 export async function getAllTasks() {
   const db = await initDB();
   const tasks = await db.getAll(STORE_NAME);
 
+  // Return tasks ordered by index so DaD changes persist.
   return tasks.sort((a, b) => a.index - b.index);
 }
+
+// CRUD: update
+export async function editTask(data: TTask) {
+  const db = await initDB();
+
+  return await db.put(STORE_NAME, data);
+}
+
+// CRUD: delete
+export async function deleteTask(id: number) {
+  const db = await initDB();
+
+  return await db.delete(STORE_NAME, id);
+}
+
+// -----------------------------
 
 // Update task order (database indices) after drag and drop
 export async function updateTaskIdx(reorderedTasks: TTask[]) {
@@ -58,17 +81,4 @@ export async function updateTaskIdx(reorderedTasks: TTask[]) {
   });
 
   await transaction.done;
-}
-
-// Delete tasks
-export async function deleteTask(id: number) {
-  const db = await initDB();
-
-  return await db.delete(STORE_NAME, id);
-}
-
-export async function editTask(data: TTask) {
-  const db = await initDB();
-
-  return await db.put(STORE_NAME, data);
 }
