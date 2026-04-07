@@ -112,6 +112,10 @@ export default function Task({
         sx={{
           cursor: isEditing ? "text" : "grab",
           opacity: dragState.type === "is-dragging" ? 0.25 : 1,
+          // Vertically align headAction button to center.
+          "& .MuiCardHeader-action": {
+            alignSelf: "center",
+          },
         }}
       />
 
