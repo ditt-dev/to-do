@@ -9,8 +9,9 @@ import type { TTask } from "@/app/lib/taskData";
 // Preview appears directly under finger on mobile. Needs a custom offset for touch events
 
 // TODO
-// Improve preview component styling
-// write documentation
+// 1) Improve styling
+// 2) Truncate text with ellipsis to maintain parity with card header
+// 3) Write documentation
 
 // Render preview of dragged element.
 interface DragPreviewProps {
