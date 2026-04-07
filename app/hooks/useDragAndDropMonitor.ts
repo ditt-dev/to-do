@@ -15,7 +15,10 @@ interface DaDMonitorProps {
   tasks: TTask[];
   setTasks: React.Dispatch<React.SetStateAction<TTask[]>>;
 }
-export function useDragAndDropMonitor({ tasks, setTasks }: DaDMonitorProps) {
+export default function useDragAndDropMonitor({
+  tasks,
+  setTasks,
+}: DaDMonitorProps) {
   useEffect(() => {
     return monitorForElements({
       canMonitor({ source }) {

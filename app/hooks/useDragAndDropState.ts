@@ -29,7 +29,10 @@ interface DaDStateProps {
   task: TTask;
   elementRef: React.RefObject<HTMLDivElement | null>;
 }
-export function useDragAndDropState({ task, elementRef }: DaDStateProps) {
+export default function useDragAndDropState({
+  task,
+  elementRef,
+}: DaDStateProps) {
   const [state, setState] = useState<TaskState>(idle);
 
   useEffect(() => {
