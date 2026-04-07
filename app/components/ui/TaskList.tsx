@@ -7,11 +7,11 @@ import {
   useOptimistic,
   startTransition,
 } from "react";
-import { Container, Stack, Divider } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 
 import CreateTask from "@/app/components/ui/CreateTask";
 import Task from "@/app/components/ui/Task";
-import { useDragAndDropMonitor } from "@/app/hooks/useDragAndDropMonitor";
+import useDragAndDropMonitor from "@/app/hooks/useDragAndDropMonitor";
 import {
   getAllTasks,
   createNewTask,
@@ -21,14 +21,12 @@ import {
 import { type TTask } from "@/app/lib/taskData";
 
 // TODO:
-// 1) Fix vertical scrollbar "jumpiness"
-
-// 2) Update TTask[] array of objects to Map() ???
+// 1) Update TTask[] array of objects to Map() ???
 // const [tasksMap, setTasksMap] = useState(new Map());
 // setTasksMap(prev => new Map(prev).set(updatedTask.id, updatedTask));
 
-// 3) Implement proper MUI loading
-// 4) Write documentation
+// 2) Implement proper MUI loading
+// 3) Write documentation
 
 export default function TaskList() {
   const [tasks, setTasks] = useState<TTask[]>([]);
@@ -117,8 +115,9 @@ export default function TaskList() {
   }
 
   return (
-    <Container>
-      <Stack gap={1}>
+    <Stack gap={3}>
+      {/* Display tasks. */}
+      <Stack gap={1.5}>
         {tasks.map((task) => (
           <Task
             key={task.id}
@@ -131,9 +130,9 @@ export default function TaskList() {
         ))}
       </Stack>
 
-      <Divider sx={{ margin: "3rem 0", backgroundColor: "red" }} />
+      {/* <Divider sx={{ margin: "3rem 0", backgroundColor: "red" }} /> */}
 
       <CreateTask onCreateTask={handleCreateTask} />
-    </Container>
+    </Stack>
   );
 }

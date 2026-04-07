@@ -7,12 +7,13 @@ import { Box, Button, IconButton } from "@mui/material";
 import { DragPreview } from "@/app/components/ui/DragPreview";
 import DropIndicator from "@/app/components/ui/DropIndicator";
 import TaskCardBase from "@/app/components/ui/TaskCardBase";
-import { useDragAndDropState } from "@/app/hooks/useDragAndDropState";
+import useDragAndDropState from "@/app/hooks/useDragAndDropState";
 import { type TTask } from "@/app/lib/taskData";
 
 // TODO:
-// 1) Clean up handlers, sanity check
-// 2) Write documentation
+// Implement text field highlight or color change to indicate edit state
+// 2) Clean up handlers, sanity check
+// 3) Write documentation
 
 interface TaskCardProps {
   expandID: number | null;
@@ -93,6 +94,7 @@ export default function Task({
   );
 
   return (
+    // Box is wrapper for DropIndicator and DragPreview components
     <Box style={{ position: "relative" }}>
       <TaskCardBase
         bodyText={bodyText}
@@ -110,7 +112,6 @@ export default function Task({
         ref={isEditing ? null : ref}
         titleText={titleText}
         sx={{
-          cursor: isEditing ? "text" : "grab",
           opacity: dragState.type === "is-dragging" ? 0.25 : 1,
           // Vertically align headAction button to center.
           "& .MuiCardHeader-action": {

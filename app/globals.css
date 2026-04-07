@@ -12,6 +12,9 @@
 
 html {
   scrollbar-gutter: stable;
+
+  /* Prevent text selection during drag and drop events. */
+  user-select: none;
 }
 
 @supports not (scrollbar-gutter: stable) {

@@ -9,11 +9,13 @@ import {
   Collapse,
   Divider,
   SxProps,
-  TextareaAutosize,
 } from "@mui/material";
 
+import { StyledInput, StyledTextarea } from "@/app/components/ui/textInputs";
+
 // TODO:
-// 1) Write documentation
+// 1) Remove Divider, find another solution for separating head and body (use an MUI component with elevation?)
+// 2) Write documentation
 
 interface TaskCardBaseProps {
   bodyText: string;
@@ -43,30 +45,28 @@ export default function TaskCardBase({
   titleText,
 }: TaskCardBaseProps) {
   // Style card text inputs.
-  const inputStyles = {
-    backgroundColor: "transparent",
-    border: "none",
-    cursor: isEditable ? "text" : "grab",
-    outline: "none",
-    padding: "0.5rem",
-    width: "100%",
-  };
 
   return (
-    <Card data-task-id={dataTaskId} ref={ref} variant="outlined" sx={{ ...sx }}>
+    <Card
+      // Used by DaD hook to play flashing animation on drop
+      data-task-id={dataTaskId}
+      ref={ref}
+      variant="outlined"
+      sx={{ ...sx }}
+    >
       <CardHeader
         // Display expand button.
         action={headAction}
         // Display task title.
         title={
-          <input
+          <StyledInput
             disabled={!isEditable}
             onChange={(e) => onTitleChange(e.target.value)}
             placeholder="Enter task name..."
             required
             type="text"
             value={titleText}
-            style={{ ...inputStyles, fontSize: "1.5rem" }}
+            sx={{ cursor: isEditable ? "text" : "grab" }}
           />
         }
       />
@@ -76,16 +76,13 @@ export default function TaskCardBase({
       <Collapse in={isExpanded} timeout="auto" unmountOnExit>
         <CardContent>
           {/* Display task details */}
-          <TextareaAutosize
+          <StyledTextarea
             disabled={!isEditable}
-            minRows={2}
+            minRows={3}
             onChange={(e) => onBodyChange(e.target.value)}
             placeholder="Enter task description..."
             value={bodyText}
-            style={{
-              ...inputStyles,
-              resize: "none",
-            }}
+            sx={{ cursor: isEditable ? "text" : "grab" }}
           />
         </CardContent>
 

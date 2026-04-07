@@ -1,25 +1,30 @@
-import { Container, Typography } from "@mui/material";
+import { Container, Stack, Typography } from "@mui/material";
 
 import TaskList from "@/app/components/ui/TaskList";
 
 // TODO:
+// Add MUI paper component for box shadow
 // Check all sx attributes for unnecessary template literals
 // Export header, etc. to a layout component
 // Documentation
 
 export default function Home() {
   return (
-    <Container maxWidth="sm">
-      <Typography
-        variant="h2"
-        style={{
-          textAlign: "center",
-        }}
-      >
-        Task manager
-      </Typography>
+    <Container maxWidth="md">
+      <Stack gap={4}>
+        {/* Display header. */}
+        <Typography
+          variant="h2"
+          style={{
+            textAlign: "center",
+          }}
+        >
+          Task manager
+        </Typography>
 
-      <TaskList />
+        {/* Display main. */}
+        <TaskList />
+      </Stack>
     </Container>
   );
 }
