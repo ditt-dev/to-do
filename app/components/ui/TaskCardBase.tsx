@@ -1,17 +1,25 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { ReactNode } from "react";
 import {
   Card,
   CardActions,
-  CardContent,
   CardHeader,
   Collapse,
   Divider,
   SxProps,
 } from "@mui/material";
 
-import { StyledInput, StyledTextarea } from "@/app/components/ui/textInputs";
+import TaskTitleInput from "@/app/components/ui/TaskTitleInput";
+
+// Allow quill library to query the document object.
+const TaskBodyInput = dynamic(
+  () => import("@/app/components/ui/TaskBodyInput"),
+  {
+    ssr: false,
+  },
+);
 
 // TODO:
 // 1) Remove Divider, find another solution for separating head and body (use an MUI component with elevation?)
@@ -30,7 +38,6 @@ interface TaskCardBaseProps {
   sx?: SxProps;
   titleText: string;
 }
-
 export default function TaskCardBase({
   bodyText,
   dataTaskId,
@@ -44,8 +51,6 @@ export default function TaskCardBase({
   sx,
   titleText,
 }: TaskCardBaseProps) {
-  // Style card text inputs.
-
   return (
     <Card
       // Used by DaD hook to play flashing animation on drop
@@ -59,14 +64,16 @@ export default function TaskCardBase({
         action={headAction}
         // Display task title.
         title={
-          <StyledInput
+          <TaskTitleInput
             disabled={!isEditable}
             onChange={(e) => onTitleChange(e.target.value)}
             placeholder="Enter task name..."
             required
             type="text"
             value={titleText}
-            sx={{ cursor: isEditable ? "text" : "grab" }}
+            sx={{
+              cursor: isEditable ? "text" : "grab",
+            }}
           />
         }
       />
@@ -74,17 +81,13 @@ export default function TaskCardBase({
       <Divider />
 
       <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          {/* Display task details */}
-          <StyledTextarea
-            disabled={!isEditable}
-            minRows={3}
-            onChange={(e) => onBodyChange(e.target.value)}
-            placeholder="Enter task description..."
-            value={bodyText}
-            sx={{ cursor: isEditable ? "text" : "grab" }}
-          />
-        </CardContent>
+        <TaskBodyInput
+          disabled={!isEditable}
+          onChange={onBodyChange}
+          placeholder="Enter task description..."
+          value={bodyText}
+          sx={{ cursor: isEditable ? "text" : "grab" }}
+        />
 
         {/* Display card foot action buttons. */}
         <CardActions>{footAction}</CardActions>
