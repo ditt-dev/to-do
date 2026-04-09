@@ -49,7 +49,10 @@ export default function CreateTask({ onCreateTask }: CreateTaskProps) {
   };
 
   return (
-    <Stack gap={1} sx={{ alignItems: "center" }}>
+    <Stack
+      gap={1}
+      sx={{ alignItems: "center", marginBottom: isVisible ? "6rem" : "2rem" }}
+    >
       <Button
         disabled={isVisible}
         onClick={handleVisibility}
@@ -59,7 +62,7 @@ export default function CreateTask({ onCreateTask }: CreateTaskProps) {
         + New task
       </Button>
 
-      <Zoom in={isVisible}>
+      <Zoom in={isVisible} unmountOnExit>
         <Box sx={{ width: "100%" }}>
           <TaskCardBase
             bodyText={bodyText}
