@@ -40,7 +40,7 @@ export default function TaskList() {
     // Terminate editing if user closes expanded task.
     if (isEditing) {
       alert(
-        `You have unsaved changes.\n\nSelect Update to finalize your changes.\nSelect Cancel to undo your changes.`,
+        `Your task has unsaved edits. Please confirm or discard the changes before continuing.`,
       );
 
       // setIsEditing(false);
