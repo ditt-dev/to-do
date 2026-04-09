@@ -5,5 +5,6 @@ import { Breakpoint, createTheme } from "@mui/material";
 
 const theme = createTheme();
 
-export const appWidth: Breakpoint = "md";
-export const taskSpacing: number = parseInt(theme.spacing(1), 10);
+export const GUTTER_WIDTH: string = theme.spacing(3);
+export const MAX_WIDTH: Breakpoint = "md";
+export const TASK_SPACING: string = theme.spacing(1.5);

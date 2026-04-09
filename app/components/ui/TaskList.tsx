@@ -11,6 +11,7 @@ import { Skeleton, Stack, Typography } from "@mui/material";
 
 import CreateTask from "@/app/components/ui/CreateTask";
 import Task from "@/app/components/ui/Task";
+import { TASK_SPACING } from "@/app/config";
 import useDragAndDropMonitor from "@/app/hooks/useDragAndDropMonitor";
 import {
   getAllTasks,
@@ -123,7 +124,7 @@ export default function TaskList() {
   // Display skeleton component.
   if (loading) {
     return (
-      <Stack gap={1.5}>
+      <Stack gap={TASK_SPACING}>
         {[...Array(10).keys()].map((v) => (
           <Skeleton height={76} key={v} variant="rectangular" width="100%" />
         ))}

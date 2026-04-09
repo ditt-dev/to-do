@@ -1,7 +1,7 @@
 import type { Edge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/types";
 import { Box } from "@mui/material";
 
-import { taskSpacing } from "@/app/config";
+import { TASK_SPACING } from "@/app/config";
 
 // TODO: write documentation
 
@@ -12,13 +12,15 @@ import { taskSpacing } from "@/app/config";
  */
 
 export default function DropIndicator({ edge }: { edge: Edge }) {
+  const gapSize: number = parseInt(TASK_SPACING, 10);
+
   const lineColor = "royalblue"; // Original: #1447e6
 
   // Define line properties in pixels.
   const lineThickness = 2;
   const ornamentSize = 8;
 
-  const lineOffset = (taskSpacing + lineThickness) / -2;
+  const lineOffset = (gapSize + lineThickness) / -2;
   const ornamentOffset = (lineThickness - ornamentSize) / 2;
 
   return (
