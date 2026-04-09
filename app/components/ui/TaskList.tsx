@@ -36,7 +36,18 @@ export default function TaskList() {
   // Set up optimistic state
   const [, dispatchOptimistic] = useOptimistic(tasks);
 
-  const handleExpand = (id: number) => setExpandID(expandID === id ? null : id);
+  const handleExpand = (id: number, isEditing: boolean) => {
+    // Terminate editing if user closes expanded task.
+    if (isEditing) {
+      alert(
+        `You have unsaved changes.\n\nSelect Update to finalize your changes.\nSelect Cancel to undo your changes.`,
+      );
+
+      // setIsEditing(false);
+    } else {
+      setExpandID(expandID === id ? null : id);
+    }
+  };
 
   // Initial data fetch
   const fetchData = useCallback(async () => {

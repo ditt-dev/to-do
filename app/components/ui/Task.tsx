@@ -19,7 +19,7 @@ interface TaskCardProps {
   expandID: number | null;
   onDelete: (id: number) => Promise<void>;
   onEdit: (task: TTask) => Promise<void>;
-  onExpand: (id: number) => void;
+  onExpand: (id: number, isEditing: boolean) => void;
   task: TTask;
 }
 export default function Task({
@@ -101,7 +101,7 @@ export default function Task({
         dataTaskId={task.id}
         footAction={footAction}
         headAction={
-          <IconButton onClick={() => onExpand(task.id)}>
+          <IconButton onClick={() => onExpand(task.id, isEditing)}>
             <MoreVert />
           </IconButton>
         }
