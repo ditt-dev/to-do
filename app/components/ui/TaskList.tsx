@@ -7,7 +7,7 @@ import {
   useOptimistic,
   startTransition,
 } from "react";
-import { Container, Stack } from "@mui/material";
+import { Skeleton, Stack, Typography } from "@mui/material";
 
 import CreateTask from "@/app/components/ui/CreateTask";
 import Task from "@/app/components/ui/Task";
@@ -120,9 +120,18 @@ export default function TaskList() {
   // Enable drag and drop functionality;
   useDragAndDropMonitor({ tasks, setTasks });
 
-  // TODO: MUI loading component
+  // Display skeleton component.
   if (loading) {
-    return <Container>Loading...</Container>;
+    return (
+      <Stack gap={1.5}>
+        {[...Array(10).keys()].map((v) => (
+          <Skeleton height={76} key={v} variant="rectangular" width="100%" />
+        ))}
+        <Typography variant="h5" sx={{ alignSelf: "center", opacity: "50%" }}>
+          Loading tasks...
+        </Typography>
+      </Stack>
+    );
   }
 
   return (
@@ -140,8 +149,6 @@ export default function TaskList() {
           />
         ))}
       </Stack>
-
-      {/* <Divider sx={{ margin: "3rem 0", backgroundColor: "red" }} /> */}
 
       <CreateTask onCreateTask={handleCreateTask} />
     </Stack>
