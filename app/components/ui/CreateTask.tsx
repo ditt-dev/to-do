@@ -5,12 +5,12 @@ import { Box, Button, Stack, Zoom } from "@mui/material";
 
 import TaskCardBase from "@/app/components/ui/TaskCardBase";
 import { type TTask } from "@/app/lib/taskData";
+import { GUTTER_WIDTH, GUTTER_WIDTH_2X } from "@/app/config";
 
 // TODO:
 // 1) Toggle top/bottom mode for when the button is under the list or above it
 // 2) Improve button CSS (MUI icon?)
-// 3) Improve textarea CSS
-// 4) Write documentation
+// 3) Write documentation
 
 interface CreateTaskProps {
   onCreateTask: (taskData: Omit<TTask, "id" | "index">) => Promise<void>;
@@ -51,7 +51,10 @@ export default function CreateTask({ onCreateTask }: CreateTaskProps) {
   return (
     <Stack
       gap={1}
-      sx={{ alignItems: "center", marginBottom: isVisible ? "6rem" : "2rem" }}
+      sx={{
+        alignItems: "center",
+        marginBottom: isVisible ? GUTTER_WIDTH_2X : GUTTER_WIDTH,
+      }}
     >
       <Button
         disabled={isVisible}
