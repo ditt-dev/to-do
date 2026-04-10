@@ -1,31 +1,24 @@
-import { Box, Container, Paper } from "@mui/material";
-
+import DesktopLayout from "@/app/components/layout/DesktopLayout";
 import BottomNav from "@/app/components/ui/BottomNav";
-import TaskList from "@/app/components/ui/TaskList";
-
-import CompletedList from "@/app/components/ui/CompletedList";
-import SettingsPanel from "@/app/components/ui/SettingsPanel";
-import AboutPanel from "@/app/components/ui/AboutPanel";
-import {
-  GUTTER_WIDTH,
-  MAX_WIDTH,
-  MIN_HEIGHT,
-  type AppView,
-} from "@/app/config";
+import AboutPanel from "@/app/components/views/AboutPanel";
+import CompletedList from "@/app/components/views/CompletedList";
+import SettingsPanel from "@/app/components/views/SettingsPanel";
+import TaskList from "@/app/components/views/TaskList";
+import { type AppView } from "@/app/config";
 
 // TODO:
 // 1) Check all sx attributes for unnecessary template literals
 // 2) Update all handlers with synthetic event parameter
-// 3)Write documentation
+// 3) Write documentation
 
-interface HomeProps {
+interface URLProps {
   searchParams: Promise<{ view?: AppView }>;
 }
-export default async function Home({ searchParams }: HomeProps) {
-  const params = await searchParams;
+export default async function Home({ searchParams }: URLProps) {
+  const { view = "tasks" } = await searchParams;
 
   function renderContent() {
-    switch (params.view) {
+    switch (view) {
       case "tasks":
         return <TaskList />;
       case "completed":
@@ -39,60 +32,5 @@ export default async function Home({ searchParams }: HomeProps) {
     }
   }
 
-  return (
-    <Container
-      disableGutters
-      id="app-wrapper"
-      maxWidth={MAX_WIDTH}
-      sx={{
-        display: "flex",
-        marginY: GUTTER_WIDTH,
-        minHeight: MIN_HEIGHT,
-      }}
-    >
-      <Paper
-        elevation={3}
-        square={false}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          // Hide bottom navigation's box shadow.
-          overflow: "hidden",
-          width: "100%",
-        }}
-      >
-        {/* Display main content. */}
-        <Box
-          component="main"
-          id="content-wrapper"
-          sx={{
-            // Push bottom navigation to the bottom of the parent container.
-            flexGrow: 1,
-            paddingX: GUTTER_WIDTH,
-          }}
-        >
-          {/* Display header. */}
-          {/* <Box component="header">
-            <Typography
-              variant="h2"
-              sx={{
-                marginBottom: "2rem",
-                marginTop: "3.5rem",
-                textAlign: "center",
-              }}
-            >
-              Task manager
-            </Typography>
-          </Box> */}
-
-          {renderContent()}
-        </Box>
-
-        {/* Display bottom navigation. */}
-        <Box component="nav">
-          <BottomNav />
-        </Box>
-      </Paper>
-    </Container>
-  );
+  return <DesktopLayout content={renderContent()} navigation={<BottomNav />} />;
 }
