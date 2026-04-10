@@ -18,8 +18,8 @@ export default function BottomNav() {
   const [value, setValue] = useState(0);
 
   return (
-    <Box sx={{ backgroundColor: "red" }}>
-      <Paper elevation={3}>
+    <Box>
+      <Paper elevation={3} square={true}>
         <BottomNavigation
           showLabels
           value={value}

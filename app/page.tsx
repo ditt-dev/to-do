@@ -4,9 +4,6 @@ import BottomNav from "@/app/components/ui/BottomNav";
 import TaskList from "@/app/components/ui/TaskList";
 import { GUTTER_WIDTH, MAX_WIDTH, MIN_HEIGHT } from "@/app/config";
 
-// BUG:
-// Internal scrolling-- need to remove overflow: hidden
-
 // TODO:
 // Check all sx attributes for unnecessary template literals
 // Documentation
@@ -19,9 +16,8 @@ export default function Home() {
       maxWidth={MAX_WIDTH}
       sx={{
         display: "flex",
-        height: MIN_HEIGHT,
         marginY: GUTTER_WIDTH,
-        position: "relative",
+        minHeight: MIN_HEIGHT,
       }}
     >
       <Paper
@@ -30,8 +26,7 @@ export default function Home() {
         sx={{
           display: "flex",
           flexDirection: "column",
-
-          // Round NavBar corners.
+          // Hide bottom navigation's box shadow.
           overflow: "hidden",
           width: "100%",
         }}
@@ -39,11 +34,8 @@ export default function Home() {
         <Box
           id="content-wrapper"
           sx={{
-            display: "flex",
-            flexDirection: "column",
+            // Push bottom navigation to the bottom of the parent container.
             flexGrow: 1,
-            minHeight: 0,
-            overflow: "hidden",
             paddingX: GUTTER_WIDTH,
           }}
         >
@@ -62,10 +54,7 @@ export default function Home() {
           </Box>
 
           {/* Display task data. */}
-          <Box
-            component="main"
-            sx={{ flexGrow: 1, minHeight: 0, overflow: "auto" }}
-          >
+          <Box component="main">
             <TaskList />
           </Box>
         </Box>
