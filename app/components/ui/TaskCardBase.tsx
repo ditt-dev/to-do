@@ -82,6 +82,7 @@ export default function TaskCardBase({
 
       <Collapse in={isExpanded} timeout="auto">
         <TaskBodyInput
+          dataTaskId={dataTaskId}
           disabled={!isEditable}
           onChange={onBodyChange}
           placeholder="Enter task description..."

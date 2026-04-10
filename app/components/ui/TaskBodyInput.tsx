@@ -14,6 +14,7 @@ import "quill/dist/quill.snow.css";
 // 2) Write documentation
 
 interface TaskInputBodyProps {
+  dataTaskId?: number;
   disabled: boolean;
   onChange?: (html: string) => void;
   placeholder?: string;
@@ -22,6 +23,7 @@ interface TaskInputBodyProps {
 }
 
 export default function TaskBodyInput({
+  dataTaskId,
   disabled,
   onChange,
   placeholder,
@@ -33,6 +35,7 @@ export default function TaskBodyInput({
   const isInternalUpdate = useRef(false);
   const onChangeRef = useRef(onChange);
   const disabledRef = useRef(disabled);
+  const toolbarId = `quill-toolbar-${dataTaskId}`;
 
   useEffect(() => {
     onChangeRef.current = onChange;
@@ -44,7 +47,7 @@ export default function TaskBodyInput({
       quillRef.current = new Quill(editorRef.current, {
         theme: "snow",
         modules: {
-          toolbar: "#quill-toolbar",
+          toolbar: `#${toolbarId}`,
         },
         placeholder: disabled ? " " : placeholder,
         readOnly: disabled,
@@ -102,12 +105,8 @@ export default function TaskBodyInput({
 
   return (
     <>
-      <Box
-        sx={{
-          display: disabled ? "none" : "block",
-        }}
-      >
-        <Box id="quill-toolbar" sx={{ backgroundColor: "#fafafa" }}>
+      <Box sx={{ display: disabled ? "none" : "block" }}>
+        <Box id={toolbarId} sx={{ backgroundColor: "#fafafa" }}>
           <Collapse in={!disabled}>
             <select className="ql-header" defaultValue="">
               <option value="1">Heading 1</option>
