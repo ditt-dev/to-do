@@ -23,3 +23,4 @@ export const GUTTER_WIDTH_2X: BreakpointObject = calcGutterWidth(2);
 export const MAX_WIDTH: Breakpoint = "md";
 export const MIN_HEIGHT: BreakpointObject = calcVertMargins(GUTTER_WIDTH);
 export const TASK_SPACING: string = theme.spacing(1.5);
+export type AppView = "tasks" | "completed" | "settings" | "about";
