@@ -10,7 +10,13 @@
   }
 }
 
+/* 
+TODO: 
+1) Examine custom CSS
+*/
+
 html {
+  /* Prevent context resizing when scrollbar appears. */
   scrollbar-gutter: stable;
 
   /* Prevent text selection during drag and drop events. */
