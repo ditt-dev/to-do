@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { SyntheticEvent } from "react";
 import {
   Assignment,
   AssignmentTurnedIn,
@@ -14,35 +15,50 @@ import {
   Paper,
 } from "@mui/material";
 
+import { type AppView } from "@/app/config";
+
+// TODO:
+// 1) Write documentation
+
 export default function BottomNav() {
-  const [value, setValue] = useState(0);
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const currentView = (searchParams.get("view") as AppView) || "tasks";
+
+  const handleUpdateParams = (_e: SyntheticEvent, newView: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("view", newView);
+
+    // Update URL
+    router.replace(`${pathname}?${params}`, { scroll: false });
+  };
 
   return (
     <Box>
       <Paper elevation={3} square={true}>
         <BottomNavigation
+          onChange={handleUpdateParams}
           showLabels
-          value={value}
-          onChange={(_e, newValue) => setValue(newValue)}
+          value={currentView}
         >
           <BottomNavigationAction
             label="My Tasks"
             icon={<Assignment />}
-            value={0}
+            value="tasks"
           />
           <BottomNavigationAction
             label="Completed"
             icon={<AssignmentTurnedIn />}
-            value={1}
+            value="completed"
           />
-
           <BottomNavigationAction
             label="Settings"
             icon={<Settings />}
-            value={2}
+            value="settings"
           />
-
-          <BottomNavigationAction label="About" icon={<Info />} value={3} />
+          <BottomNavigationAction label="About" icon={<Info />} value="about" />
         </BottomNavigation>
       </Paper>
     </Box>

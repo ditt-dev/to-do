@@ -1,14 +1,44 @@
-import { Box, Container, Paper, Typography } from "@mui/material";
+import { Box, Container, Paper } from "@mui/material";
 
 import BottomNav from "@/app/components/ui/BottomNav";
 import TaskList from "@/app/components/ui/TaskList";
-import { GUTTER_WIDTH, MAX_WIDTH, MIN_HEIGHT } from "@/app/config";
+
+import CompletedList from "@/app/components/ui/CompletedList";
+import SettingsPanel from "@/app/components/ui/SettingsPanel";
+import AboutPanel from "@/app/components/ui/AboutPanel";
+import {
+  GUTTER_WIDTH,
+  MAX_WIDTH,
+  MIN_HEIGHT,
+  type AppView,
+} from "@/app/config";
 
 // TODO:
-// Check all sx attributes for unnecessary template literals
-// Documentation
+// 1) Check all sx attributes for unnecessary template literals
+// 2) Update all handlers with synthetic event parameter
+// 3)Write documentation
 
-export default function Home() {
+interface HomeProps {
+  searchParams: Promise<{ view?: AppView }>;
+}
+export default async function Home({ searchParams }: HomeProps) {
+  const params = await searchParams;
+
+  function renderContent() {
+    switch (params.view) {
+      case "tasks":
+        return <TaskList />;
+      case "completed":
+        return <CompletedList />;
+      case "settings":
+        return <SettingsPanel />;
+      case "about":
+        return <AboutPanel />;
+      default:
+        return <TaskList />;
+    }
+  }
+
   return (
     <Container
       disableGutters
@@ -31,7 +61,9 @@ export default function Home() {
           width: "100%",
         }}
       >
+        {/* Display main content. */}
         <Box
+          component="main"
           id="content-wrapper"
           sx={{
             // Push bottom navigation to the bottom of the parent container.
@@ -40,7 +72,7 @@ export default function Home() {
           }}
         >
           {/* Display header. */}
-          <Box component="header">
+          {/* <Box component="header">
             <Typography
               variant="h2"
               sx={{
@@ -51,12 +83,9 @@ export default function Home() {
             >
               Task manager
             </Typography>
-          </Box>
+          </Box> */}
 
-          {/* Display task data. */}
-          <Box component="main">
-            <TaskList />
-          </Box>
+          {renderContent()}
         </Box>
 
         {/* Display bottom navigation. */}
