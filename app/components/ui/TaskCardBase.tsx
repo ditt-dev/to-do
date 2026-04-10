@@ -80,7 +80,7 @@ export default function TaskCardBase({
 
       <Divider />
 
-      <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+      <Collapse in={isExpanded} timeout="auto">
         <TaskBodyInput
           disabled={!isEditable}
           onChange={onBodyChange}
